@@ -6,13 +6,24 @@ import { toast } from "react-toastify";
 const BillDetails = () => {
   const { fireBaseUser } = use(SmartBillContext);
   const [transictions, setTransictions] = useState([]);
+  const [refresh , setRefresh] = useState(false);
   useEffect(() => {
-    fetch(`https://smartbill-managment-server.onrender.com/transiction/${fireBaseUser?.uid}`)
+    fetch(
+      `https://smartbill-managment-server.onrender.com/transiction/${fireBaseUser?.uid}`
+    )
       .then((res) => res.json())
       .then((data) => setTransictions(data));
-  }, [fireBaseUser?.uid]);
+  }, [fireBaseUser?.uid,refresh]);
   const bill = useLoaderData();
   const handlePayNow = () => {
+
+    const isAlreadyPaid = transictions.find(
+      (transiction) => transiction.bill_id === bill._id
+    );
+    if (isAlreadyPaid) {
+      return toast.error("You have already paid this bill");
+    }
+
     let now = new Date();
     let date = now.toLocaleDateString("en-GB", {
       day: "2-digit",
@@ -32,25 +43,21 @@ const BillDetails = () => {
       time,
       payCode,
     };
-    fetch(`https://smartbill-managment-server.onrender.com/bill/${bill._id}`, {
-        method:"POST",
-        headers:{
-          "content-type":"application/json"
-        },
-        body: JSON.stringify(transictionInformation)
-    }
 
-    ).then((res) => res.json())
-    .then((data) => {
-      const isAlreadyPaid = transictions.filter(transiction => transiction.bill_id === bill._id);
-      if(isAlreadyPaid.length > 0){
-        return toast.error("You have already paid this bill");
-      } else {
-        if(data.insertedId){
-          toast.success("Payment Successful");
-        }
-      }
+    fetch(`https://smartbill-managment-server.onrender.com/bill/${bill._id}`, {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify(transictionInformation),
     })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.insertedId) {
+          toast.success("Payment Successful");
+          setRefresh(!refresh);
+        }
+      });
   };
 
   return (
