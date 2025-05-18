@@ -13,6 +13,7 @@ const googleProvider = new GoogleAuthProvider();
 const SmartBillProvider = ({ children }) => {
   const [fireBaseUser, setFireBaseUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [user,setUser]=useState(null)
   const googleLogIn = () => {
     setLoading(true);
     return signInWithPopup(auth, googleProvider);
@@ -37,6 +38,14 @@ const SmartBillProvider = ({ children }) => {
       unsubscribe();
     };
   }, []);
+  useEffect(()=>{
+    fetch(`https://smartbill-managment-server.onrender.com/user/${fireBaseUser?.email}`)
+    .then((res) => res.json())
+    .then((data) => {
+      setUser(data);
+      console.log(data);
+    });
+  },[fireBaseUser])
   const information = {
     googleLogIn,
     createAccount,
@@ -44,6 +53,7 @@ const SmartBillProvider = ({ children }) => {
     fireBaseUser,
     logoutUser,
     loading,
+    user
   };
 
   return <SmartBillContext value={information}>{children}</SmartBillContext>;

@@ -3,7 +3,7 @@ import { Link, NavLink } from "react-router";
 import Loader from "../Loader/Loader";
 import SmartBillContext from "../../Context/SmartBillContext";
 const Navbar = () => {
-  const { fireBaseUser, logoutUser } = use(SmartBillContext);
+  const { fireBaseUser, logoutUser,user } = use(SmartBillContext);
 
   const link = (
     <>
@@ -32,7 +32,7 @@ const Navbar = () => {
           className={({ isActive }) =>
             isActive ? "font-bold text-primary underline" : "text-gray-600"
           }
-          to={"/login"}
+          to={"/myprofile"}
         >
           My Profile
         </NavLink>
@@ -123,7 +123,7 @@ const Navbar = () => {
             <img
               alt="USER PHOTO"
               src={
-                fireBaseUser?.photoURL ||
+                user?.photoURL ||
                 "https://t4.ftcdn.net/jpg/02/29/75/83/360_F_229758328_7x8jwCwjtBMmC6rgFzLFhZoEpLobB6L8.jpg"
               }
             />

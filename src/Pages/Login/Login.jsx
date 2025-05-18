@@ -1,5 +1,5 @@
 import React, { use, useState } from "react";
-import { Link } from "react-router";
+import { Link, useLocation } from "react-router";
 import { FaRegEyeSlash, FaRegEye } from "react-icons/fa";
 import SmartBillContext from "../../Context/SmartBillContext";
 import { toast } from "react-toastify";
@@ -9,7 +9,7 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPass, setShowPass] = useState(false);
-
+const location =useLocation()
   const handleGoogleLogin = () => {
     googleLogIn()
       .then((result) => {
@@ -23,6 +23,7 @@ const Login = () => {
   };
   const handleLogin = (e) => {
     e.preventDefault();
+    location.state = location.state || { from: { pathname: "/" } };
     const form = e.target;
     const email = form.email.value;
     const password = form.password.value;
@@ -45,7 +46,7 @@ const Login = () => {
             }),
           }).then((res) => res.json())
           .then((data) => {
-
+            
           });
         }
       })

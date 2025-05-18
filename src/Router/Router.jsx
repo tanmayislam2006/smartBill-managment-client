@@ -10,6 +10,7 @@ import BillDetails from "../Components/BillDetails/BillDetails";
 import Transiction from "../Components/Transiction/Transiction";
 import EditBill from "../Components/EditBill/EditBill";
 import SmartPrivateRoute from "./SmartPrivateRoute";
+import MyProfile from "../Components/MyProfile/MyProfile";
 
 // Simple error boundary component
 const ErrorBoundary = () => (
@@ -99,6 +100,13 @@ const router = createBrowserRouter([
         hydrateFallbackElement: <Loader />,
         errorElement: <ErrorBoundary />,
       },
+      {
+        path:'/myprofile',
+        element:<SmartPrivateRoute>
+          <MyProfile/>
+        </SmartPrivateRoute>,
+
+      }
     ],
   },
 ]);
