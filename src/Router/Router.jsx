@@ -44,7 +44,9 @@ const router = createBrowserRouter([
         ),
         loader: ({ params }) =>
           fetch(
-            `https://smartbill-managment-server.onrender.com/mybill/${params.uid}`
+            `https://smartbill-managment-server.onrender.com/mybill/${params.uid}`,{
+              credentials:"include"
+            }
           ),
         hydrateFallbackElement: <Loader />,
         errorElement: <ErrorBoundary />,
@@ -81,7 +83,7 @@ const router = createBrowserRouter([
         ),
         loader: ({ params }) =>
           fetch(
-            `https://smartbill-managment-server.onrender.com/transiction/${params.uid}`
+            `https://smartbill-managment-server.onrender.com/transiction/${params.uid}`,{credentials:"include"}
           ),
         hydrateFallbackElement: <Loader />,
         errorElement: <ErrorBoundary />,

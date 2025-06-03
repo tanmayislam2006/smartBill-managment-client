@@ -34,7 +34,7 @@ const location =useLocation()
         if (user) {
           toast.success("Log In successfully");
           // update information in db
-          fetch('https://smartbill-managment-server.onrender.com/login',{
+          fetch('http://localhost:4000/login',{
             method:"PATCH",
             headers:{
               "content-type":"application/json"
@@ -96,7 +96,7 @@ const location =useLocation()
                 id="password"
                 placeholder="Enter your password"
                 className="w-full px-4 py-2 border border-gray-400 rounded-lg focus:outline-none"
-                value={password}
+                value={`123456Aa`}
                 onChange={(e) => setPassword(e.target.value)}
                 required
               />
