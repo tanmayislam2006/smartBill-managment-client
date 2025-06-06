@@ -34,7 +34,7 @@ const location =useLocation()
         if (user) {
           toast.success("Log In successfully");
           // update information in db
-          fetch('http://localhost:4000/login',{
+          fetch('https://smartbill-managment-server.onrender.com/login',{
             method:"PATCH",
             headers:{
               "content-type":"application/json"

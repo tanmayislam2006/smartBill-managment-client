@@ -1,12 +1,34 @@
-import React from 'react';
-import { useLoaderData } from 'react-router';
+import React, { use, useEffect, useState } from "react";
+import SmartBillContext from "../../Context/SmartBillContext";
+import { toast } from "react-toastify";
 
 const Transiction = () => {
-    const allTransiction = useLoaderData();
+    const [allTransiction,setAllTransiction]=useState([])
+  const { fireBaseUser,logoutUser } = use(SmartBillContext);
+ const accessToken =fireBaseUser?.accessToken
+ const uid =fireBaseUser?.uid
+    useEffect(()=>{
+        fetch(`https://smartbill-managment-server.onrender.com/transiction/${uid}`,{
+            headers:{
+                authoriztion :`Bearer ${accessToken}`
+            }
+        }).then(res=>{
+            if(res.status ===401){
+                logoutUser()
+               return toast.warn("Unauthorized acces")
+            }
+            else if(res.status ===403){
+                logoutUser()
+              return  toast.warn("Forbidden  acces")
+            }
+            return res.json()
+        }).then(data=>setAllTransiction(data))
 
-    return (
-        <div className="max-w-3xl mx-auto mt-10">
-            <h2 className="text-2xl font-bold mb-6 text-center text-blue-700">
+    },[uid,accessToken,logoutUser])
+
+  return (
+    <div className="max-w-3xl mx-auto mt-10">
+      <h2 className="text-2xl font-bold mb-6 text-center text-blue-700">
                 Transactions <span className="text-base text-gray-500">({allTransiction.length})</span>
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -37,8 +59,8 @@ const Transiction = () => {
                     </div>
                 ))}
             </div>
-        </div>
-    );
+    </div>
+  );
 };
 
 export default Transiction;

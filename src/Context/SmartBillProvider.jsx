@@ -35,12 +35,11 @@ const SmartBillProvider = ({ children }) => {
       setFireBaseUser(currentUser);
       setLoading(false);
       if (currentUser?.uid) {
-        axios
-          .post(
-            "https://smartbill-managment-server.onrender.com/jsonwebtoken",
-            { uid: currentUser?.uid },
-            { withCredentials: true }
-          )
+        axios.post(
+          "https://smartbill-managment-server.onrender.com/jsonwebtoken",
+          { uid: currentUser?.uid },
+          { withCredentials: true }
+        );
       }
     });
     return () => {
@@ -48,15 +47,11 @@ const SmartBillProvider = ({ children }) => {
     };
   }, []);
   useEffect(() => {
-    fetch(
-      `https://smartbill-managment-server.onrender.com/user/${fireBaseUser?.email}`
-    )
-      .then((res) =>{ 
-        console.log(res.status);
-        
-        return res.json()})
+    fetch(`https://smartbill-managment-server.onrender.com/user/${fireBaseUser?.email}`)
+      .then((res) => res.json())
       .then((data) => {
         setUser(data);
+        setLoading(false)
       });
   }, [fireBaseUser]);
   const information = {

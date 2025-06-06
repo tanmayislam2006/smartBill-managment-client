@@ -81,11 +81,6 @@ const router = createBrowserRouter([
             <Transiction />
           </SmartPrivateRoute>
         ),
-        loader: ({ params }) =>
-          fetch(
-            `https://smartbill-managment-server.onrender.com/transiction/${params.uid}`,{credentials:"include"}
-          ),
-        hydrateFallbackElement: <Loader />,
         errorElement: <ErrorBoundary />,
       },
       {
