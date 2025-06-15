@@ -3,37 +3,28 @@ import axios from "axios";
 import SmartBillContext from "../../Context/SmartBillContext"; // Ensure this path is correct
 
 const useAxiosSecure = () => {
-  // Get user and logOut function from your context
-  const { user, logoutUser } = use(SmartBillContext);
+  // Get user objects and logOut function from your context
+  const { user, logoutUser, fireBaseUser } = use(SmartBillContext);
 
   // Memoize the axios instance so it's only created once
   const axiosSecure = useMemo(() => {
     return axios.create({
       baseURL: "http://localhost:4000", // A more common port number
     });
-  }, []); // Empty dependency array means this runs only once
+  }, []);
 
   useEffect(() => {
-    // If there's no user, don't attach interceptors
-    if (!user) {
-      return;
-    }
-
-    // --- Request Interceptor using .then() ---
+    // --- Request Interceptor (Simplified and Synchronous) ---
     const reqInterceptor = axiosSecure.interceptors.request.use(
       (config) => {
-        // Interceptors must return the config or a promise that resolves with it.
-        // We return the user.getIdToken() promise chain.
-        console.log('in conig ');
-        return user.getIdToken().then((token) => {
-          // Once the token is retrieved, add it to the headers
-          config.headers.Authorization = `Bearer ${token}`;
-          // Return the modified config so the request can proceed
-          return config;
-        }).catch((error) => {
-          // Handle potential errors during token retrieval
-          return Promise.reject(error);
-        });
+        // Check if the fireBaseUser object and its accessToken exist
+        // if (fireBaseUser?.accessToken) {
+        //   // Attach the token directly from the context object.
+        //   // Corrected typo from 'authoriztion' to 'Authorization'
+        //   config.headers.authoriztion = `Bearer ${fireBaseUser?.accessToken}`;
+        // }
+        // Always return the config so the request can proceed
+        return config;
       },
       (error) => {
         // Handle request setup errors
@@ -41,7 +32,7 @@ const useAxiosSecure = () => {
       }
     );
 
-    // --- Response Interceptor (no changes needed here) ---
+    // --- Response Interceptor (Handles global errors like 401/403) ---
     const resInterceptor = axiosSecure.interceptors.response.use(
       (response) => response,
       (error) => {
@@ -60,9 +51,11 @@ const useAxiosSecure = () => {
       axiosSecure.interceptors.request.eject(reqInterceptor);
       axiosSecure.interceptors.response.eject(resInterceptor);
     };
-  }, [user, logoutUser, axiosSecure]);
 
-  // Return the configured axios instance
+    // The effect should re-apply the interceptors if the user objects change
+  }, [user, logoutUser, axiosSecure, fireBaseUser]);
+
+  // Return the fully configured axios instance
   return axiosSecure;
 };
 

@@ -2,30 +2,26 @@ import React, { use, useEffect, useState } from "react";
 import SmartBillContext from "../../Context/SmartBillContext";
 import { toast } from "react-toastify";
 import { useParams } from "react-router";
-import axios from "axios";
 import useAxiosSecure from "../../Utility/AxiosInseptor/AxiosInseptor";
 
 const BillDetails = () => {
-  const {id}=useParams();
+  const { id } = useParams();
   const { fireBaseUser } = use(SmartBillContext);
   const [transictions, setTransictions] = useState([]);
-  const [refresh , setRefresh] = useState(false);
-  const [bill,setBill] = useState({});
-const axiosSecure = useAxiosSecure();
+  const [refresh, setRefresh] = useState(false);
+  const [bill, setBill] = useState({});
+  const axiosSecure = useAxiosSecure();
   useEffect(() => {
-    axiosSecure.get(`/bill/${id}`).then(res=>{
-      setBill(res.data)
-    })
-  }, [id,axiosSecure]);
+    axiosSecure.get(`/bill/${id}`, { withCredentials: true }).then((res) => {
+      setBill(res.data);
+    });
+  }, [id, axiosSecure]);
   useEffect(() => {
-    fetch(
-      `http://localhost:4000/transiction/${fireBaseUser?.uid}`
-    )
+    fetch(`http://localhost:4000/transiction/${fireBaseUser?.uid}`)
       .then((res) => res.json())
       .then((data) => setTransictions(data));
-  }, [fireBaseUser?.uid,refresh]);
+  }, [fireBaseUser?.uid, refresh]);
   const handlePayNow = () => {
-
     const isAlreadyPaid = transictions.find(
       (transiction) => transiction.bill_id === bill._id
     );
