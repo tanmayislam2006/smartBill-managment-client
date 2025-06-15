@@ -9,8 +9,8 @@ const EditBill = () => {
     e.preventDefault();
     const formData = new FormData(e.target);
     const updatedBill = Object.fromEntries(formData.entries());
-    // https://smartbill-managment-server.onrender.com
-    fetch(`https://smartbill-managment-server.onrender.com/editbill/${bill._id}`, {
+    // http://localhost:4000
+    fetch(`http://localhost:4000/editbill/${bill._id}`, {
       method: "PATCH",
       headers: {
         "content-type": "application/json",

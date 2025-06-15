@@ -58,7 +58,7 @@ const CreateBillPage = () => {
         uid:fireBaseUser?.uid
     }
     // set data on db
-    fetch("https://smartbill-managment-server.onrender.com/createdbill", {
+    fetch("http://localhost:4000/createdbill", {
         method:"POST",
         headers:{
           'content-type': "application/json"

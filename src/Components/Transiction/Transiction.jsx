@@ -8,7 +8,7 @@ const Transiction = () => {
  const accessToken =fireBaseUser?.accessToken
  const uid =fireBaseUser?.uid
     useEffect(()=>{
-        fetch(`https://smartbill-managment-server.onrender.com/transiction/${uid}`,{
+        fetch(`http://localhost:4000/transiction/${uid}`,{
             headers:{
                 authoriztion :`Bearer ${accessToken}`
             }

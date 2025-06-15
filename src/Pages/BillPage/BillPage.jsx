@@ -18,7 +18,7 @@ const BillPage = () => {
       confirmButtonText: "Yes, delete it!",
     }).then((result) => {
       if (result.isConfirmed) {
-        fetch(`https://smartbill-managment-server.onrender.com/bill/${id}`, {
+        fetch(`http://localhost:4000/bill/${id}`, {
           method:"DELETE"
         })
           .then((res) => res.json())

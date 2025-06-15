@@ -36,7 +36,7 @@ const SmartBillProvider = ({ children }) => {
       setLoading(false);
       if (currentUser?.uid) {
         axios.post(
-          "https://smartbill-managment-server.onrender.com/jsonwebtoken",
+          "http://localhost:4000/jsonwebtoken",
           { uid: currentUser?.uid },
           { withCredentials: true }
         );
@@ -47,7 +47,7 @@ const SmartBillProvider = ({ children }) => {
     };
   }, []);
   useEffect(() => {
-    fetch(`https://smartbill-managment-server.onrender.com/user/${fireBaseUser?.email}`)
+    fetch(`http://localhost:4000/user/${fireBaseUser?.email}`)
       .then((res) => res.json())
       .then((data) => {
         setUser(data);

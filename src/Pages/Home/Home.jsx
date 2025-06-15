@@ -1,6 +1,7 @@
 import React, { use } from 'react';
 import SmartBillContext from '../../Context/SmartBillContext';
 import { Link } from 'react-router';
+import Hero from './Hero';
 
 
 const Home = () => {
@@ -9,6 +10,7 @@ const Home = () => {
     return (
         <div className="min-h-[80vh] bg-gray-50 flex flex-col items-center justify-center px-4">
             {/* Hero Section */}
+            <Hero/>
             <section className="text-center mb-10">
                 <h1 className="text-4xl font-bold text-blue-700 mb-3">Welcome to Smart Bill Manager</h1>
                 <p className="text-gray-600 max-w-xl mx-auto">

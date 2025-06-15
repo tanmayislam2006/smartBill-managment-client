@@ -1,20 +1,29 @@
 import React, { use, useEffect, useState } from "react";
-import { useLoaderData } from "react-router";
 import SmartBillContext from "../../Context/SmartBillContext";
 import { toast } from "react-toastify";
+import { useParams } from "react-router";
+import axios from "axios";
+import useAxiosSecure from "../../Utility/AxiosInseptor/AxiosInseptor";
 
 const BillDetails = () => {
+  const {id}=useParams();
   const { fireBaseUser } = use(SmartBillContext);
   const [transictions, setTransictions] = useState([]);
   const [refresh , setRefresh] = useState(false);
+  const [bill,setBill] = useState({});
+const axiosSecure = useAxiosSecure();
+  useEffect(() => {
+    axiosSecure.get(`/bill/${id}`).then(res=>{
+      setBill(res.data)
+    })
+  }, [id,axiosSecure]);
   useEffect(() => {
     fetch(
-      `https://smartbill-managment-server.onrender.com/transiction/${fireBaseUser?.uid}`
+      `http://localhost:4000/transiction/${fireBaseUser?.uid}`
     )
       .then((res) => res.json())
       .then((data) => setTransictions(data));
   }, [fireBaseUser?.uid,refresh]);
-  const bill = useLoaderData();
   const handlePayNow = () => {
 
     const isAlreadyPaid = transictions.find(
@@ -44,7 +53,7 @@ const BillDetails = () => {
       payCode,
     };
 
-    fetch(`https://smartbill-managment-server.onrender.com/bill/${bill._id}`, {
+    fetch(`http://localhost:4000/bill/${bill._id}`, {
       method: "POST",
       headers: {
         "content-type": "application/json",

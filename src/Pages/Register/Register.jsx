@@ -49,7 +49,7 @@ const Register = () => {
           creationTime: result.user?.metadata?.creationTime,
           lastSignInTime: result.user?.metadata?.lastSignInTime,
         };
-        fetch("https://smartbill-managment-server.onrender.com/register",{
+        fetch("http://localhost:4000/register",{
           method:"POST",
           headers:{
             'content-type': "application/json"
